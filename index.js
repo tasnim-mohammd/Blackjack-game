@@ -1,9 +1,21 @@
 let player = {
-    name: "Per",
+    name: "",   // The user's name will be stored here
     chips: 200
+};
+
+let nameInput = document.getElementById("name-input");
+let playerEl = document.getElementById("player-el");
+
+function updatePlayerName() {
+    player.name = nameInput.value.trim();
+    playerEl.textContent = player.name + ": $" + player.chips;
 }
 
-let cards = []
+// Call updatePlayerName when the user enters their name or clicks a button to update the display
+nameInput.addEventListener("input", updatePlayerName);
+
+
+let cards = [0, 0, 0, 0]
 let sum = 0
 let hasBlackJack = false
 let isAlive = false
@@ -11,16 +23,14 @@ let message = ""
 let messageEl = document.getElementById("message-el")
 let sumEl = document.getElementById("sum-el")
 let cardsEl = document.getElementById("cards-el")
-let playerEl = document.getElementById("player-el")
 
-playerEl.textContent = player.name + ": $" + player.chips
 
 function getRandomCard() {
-    let randomNumber = Math.floor( Math.random()*13 ) + 1
-    if (randomNumber > 10) {
-        return 10
+    let randomNumber = Math.floor( Math.random()*30 ) + 1
+    if (randomNumber > 25) {
+        return 25
     } else if (randomNumber === 1) {
-        return 11
+        return 10
     } else {
         return randomNumber
     }
@@ -30,9 +40,15 @@ function startGame() {
     isAlive = true
     let firstCard = getRandomCard()
     let secondCard = getRandomCard()
-    cards = [firstCard, secondCard]
-    sum = firstCard + secondCard
+    let thirdCard = getRandomCard()
+    let forthCard = getRandomCard()
+    let fifthCard = getRandomCard()
+    cards = [firstCard, secondCard, thirdCard, forthCard, fifthCard]
+    for (let i = 0; i < cards.length; i++) {
+        sum += cards[i]
+    }
     renderGame()
+    sum = 0
 }
 
 function renderGame() {
@@ -42,10 +58,13 @@ function renderGame() {
     }
     
     sumEl.textContent = "Sum: " + sum
-    if (sum <= 20) {
+    if (sum <= 200) {
         message = "Do you want to draw a new card?"
-    } else if (sum === 21) {
+    } else if (sum === 100) {
         message = "You've got Blackjack!"
+    }
+    else if(sum >= 450){
+        message = "You are succeeding, keep going!"
         hasBlackJack = true
     } else {
         message = "You're out of the game!"
@@ -56,10 +75,22 @@ function renderGame() {
 
 
 function newCard() {
-    if (isAlive === true && hasBlackJack === false) {
+    if (isAlive === true || hasBlackJack === false) {
         let card = getRandomCard()
         sum += card
         cards.push(card)
         renderGame()        
     }
+}
+
+function FourNewCards() {
+    if (isAlive === true || hasBlackJack === false) {
+       // cards = [];
+        for (let i = 0; i < 4; i++) {
+            let card = getRandomCard();
+            sum += card;
+            cards.push(card);
+        }
+        renderGame();
+    }       
 }
