@@ -1,5 +1,5 @@
 let player = {
-    name: "",   // The user's name will be stored here
+    name: "",   
     chips: 200
 };
 
@@ -11,7 +11,6 @@ function updatePlayerName() {
     playerEl.textContent = player.name + ": $" + player.chips;
 }
 
-// Call updatePlayerName when the user enters their name or clicks a button to update the display
 nameInput.addEventListener("input", updatePlayerName);
 
 
